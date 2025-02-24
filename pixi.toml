@@ -1,0 +1,17 @@
+[project]
+authors = ["Joseph Kuo <jovesus@gmail.com>"]
+channels = ["conda-forge"]
+name = "fastqio"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+pip = ">=25.0.1,<26"
+cython = ">=3.0.12,<4"
+numpy = ">=2.2.3,<3"
+pytest = ">=8.3.4,<9"
+
+[pypi-dependencies]
+cython = "*"

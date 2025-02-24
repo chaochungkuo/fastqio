@@ -1,0 +1,6 @@
+
+# pixi environments
+.pixi
+*.egg-info
+fastqio/fastq_cython.c
+fastqio/fastq_cython.cpython-313-darwin.so
