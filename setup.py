@@ -9,10 +9,10 @@ extensions = [
 
 setup(
     name="fastqio",
-    version="0.1.0",
+    version="0.2.0",
     description="FASTQ parser with multi-threaded I/O and Cython-accelerated string handling",
     author="Joseph Chao-Chung Kuo",
-    author_email="chaochung.kuo@rwth-aachen.de",
+    author_email="chao-chung.kuo@rwth-aachen.de",
     url="https://github.com/chaochungkuo/fastqio",
     packages=find_packages(),
     ext_modules=cythonize(extensions, language_level=3),
