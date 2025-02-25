@@ -169,6 +169,7 @@ class FASTQReader:
         chunk_index = 0
         executor = ThreadPoolExecutor(max_workers=self.thread)
         futures = []
+
         while True:
             lines = load_chunk(self._file, self.chunk_size)
             if not lines:
@@ -177,17 +178,19 @@ class FASTQReader:
             for i in range(0, len(lines), 4):
                 if i + 1 < len(lines):
                     records.append(lines[i+1])  # sequence only
-            # For extraction, simple Python slicing is fast.
-            futures.append(executor.submit(lambda recs: [seq[start:end] for seq in recs], records))
-        print(f"Processed chunks with {self.chunk_size} sequences each",
-              flush=True, end="")
-        for future in as_completed(futures):
-            extracted.extend(future.result())
-            print(".", flush=True, end=".")
-        print()
-            
+            futures.append((chunk_index, executor.submit(lambda recs: [seq[start:end] for seq in recs], records)))
+            chunk_index += 1
+
+        results = [None] * chunk_index
+        for index, future in futures:
+            results[index] = future.result()
+
+        for result in results:
+            extracted.extend(result)
+
         executor.shutdown()
         self._reset_file()
+
         if save_parquet:
             table = pa.Table.from_pydict({"extracted": extracted})
             filename = f"{parquet_prefix}.parquet"
